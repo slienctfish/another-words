@@ -29,7 +29,7 @@ export async function POST(request) {
   const options = {
     // model: 'black-forest-labs/flux-schnell',
     model: 'anthropic/claude-3.7-sonnet',
-    input: { prompt, system_prompt }
+    input: { prompt }
   }
  
   if (WEBHOOK_HOST) {

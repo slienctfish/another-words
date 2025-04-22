@@ -8,9 +8,13 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 export default function Home() {
   const [prediction, setPrediction] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
  
   const handleSubmit = async (e) => {
+    // 阻止原来的事件
     e.preventDefault();
+    if(loading) return;
+    setLoading(true);
     const response = await fetch("/api/predictions", {
       method: "POST",
       headers: {
@@ -23,10 +27,11 @@ export default function Home() {
     let prediction = await response.json();
     if (response.status !== 201) {
       setError(prediction.detail);
+      setLoading(false);
       return;
     }
     setPrediction(prediction);
- 
+    
     while (
       prediction.status !== "succeeded" &&
       prediction.status !== "failed"
@@ -36,11 +41,13 @@ export default function Home() {
       prediction = await response.json();
       if (response.status !== 200) {
         setError(prediction.detail);
+        setLoading(false);
         return;
       }
       console.log({ prediction: prediction });
       setPrediction(prediction);
     }
+    setLoading(false);
   };
  
   return (
@@ -52,7 +59,7 @@ export default function Home() {
           type="text"
           className="flex-grow"
           name="prompt"
-          placeholder="帮你分析你理不清的话"
+          placeholder="把对方的话粘进来，我来告诉你他（她）的潜台词"
         />
         <button className="button" type="submit">
           Go!
@@ -62,16 +69,16 @@ export default function Home() {
       {error && <div>{error}</div>}
  
       {prediction && (
-        <>
-          {(prediction.output && prediction.status === "succeeded") && (
+        <>{prediction.output}
+          {/* {(prediction.output && prediction.status === "succeeded") && (
             <div className="image-wrapper mt-5">
               <div 
                 className="svg-container"
                 dangerouslySetInnerHTML={{ __html: prediction.output.join('') }}
               />
             </div>
-          )}
-          <p className="py-3 text-sm opacity-50">status: {prediction.status}</p>
+          )} */}
+          <p className="py-3 text-sm opacity-50">状态: {prediction.status === 'succeeded' ? '分析完成' : '正在分析请稍候……'}</p>
         </>
       )}
     </div>
