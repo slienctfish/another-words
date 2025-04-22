@@ -127,7 +127,7 @@ export default function Home() {
         </>
       )}
       <div className="mt-auto text-center py-2">
-        <p className="text-[10px] text-gray-400">免责声明：本应用仅供娱乐，分析结果不代表任何专业意见，请勿当真。</p>
+        <p className="text-[10px] text-gray-400">本应用仅供娱乐，分析结果不代表任何专业意见，请勿当真。</p>
       </div>
     </div>
   );
