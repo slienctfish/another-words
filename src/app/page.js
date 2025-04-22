@@ -70,14 +70,14 @@ export default function Home() {
  
       {prediction && (
         <>{prediction.output}
-          {/* {(prediction.output && prediction.status === "succeeded") && (
+          {(prediction.output && prediction.status === "succeeded") && (
             <div className="image-wrapper mt-5">
               <div 
                 className="svg-container"
                 dangerouslySetInnerHTML={{ __html: prediction.output.join('') }}
               />
             </div>
-          )} */}
+          )}
           <p className="py-3 text-sm opacity-50">状态: {prediction.status === 'succeeded' ? '分析完成' : '正在分析请稍候……'}</p>
         </>
       )}
